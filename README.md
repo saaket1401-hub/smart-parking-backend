@@ -26,7 +26,25 @@ What it does:
   live data.
 - **Admin manual override**, protected by a token.
 
-## Setup
+## Run it on GitHub (Codespaces)
+
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/saaket1401-hub/smart-parking-backend)
+
+Click the badge (or **Code → Codespaces → Create codespace on main**). When the codespace starts it
+installs the requirements, starts the backend on port 8000 and starts the node simulator, which sends
+data to the backend over HTTP. The **Ports** tab shows "Parking dashboard" on port 8000. Open it to
+see the live web app, and add `/docs` to the address for the API documentation. The backend also
+subscribes to HiveMQ, so a running Wokwi MQTT node shows up too.
+
+- Logs: `tail -f /tmp/backend.log` and `tail -f /tmp/simulator.log` in the codespace terminal
+- Restart: `pkill -f uvicorn; pkill -f simulate.py`, then re-run the `postStartCommand` from
+  `.devcontainer/devcontainer.json`
+- The forwarded port is private (only you, signed in to GitHub) unless you set it to Public in the
+  Ports tab. Stop the codespace when you're done to save your free hours.
+
+## Run on your own computer
+
+### Setup
 
 Python 3.10 or newer.
 
@@ -37,7 +55,7 @@ python -m venv .venv
 pip install -r requirements.txt
 ```
 
-## Run
+### Run
 
 ```bash
 uvicorn backend.main:app --host 0.0.0.0 --port 8000
@@ -58,7 +76,7 @@ To test the Unknown state, stop the Wokwi simulation, or run
 `python simulate.py --silent-after 30`. About 15 s later the bay turns grey (Unknown) and the
 admin view shows Offline.
 
-### No internet or broker?
+#### No internet or broker?
 
 Run `python simulate.py --http http://localhost:8000` to POST the same messages to
 `/api/ingest` instead of MQTT. You can also start a local Mosquitto and run with
