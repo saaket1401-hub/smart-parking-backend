@@ -1,0 +1,14 @@
+{
+  "name": "Smart Parking Backend",
+  "image": "mcr.microsoft.com/devcontainers/python:3.12",
+  "postCreateCommand": "pip install --disable-pip-version-check -r requirements.txt -r requirements-dev.txt",
+  "postStartCommand": "nohup bash -c 'python -m uvicorn backend.main:app --host 0.0.0.0 --port 8000 > /tmp/backend.log 2>&1 &' && sleep 4 && nohup bash -c 'python simulate.py --http http://localhost:8000 > /tmp/simulator.log 2>&1 &'",
+  "forwardPorts": [8000],
+  "portsAttributes": {
+    "8000": { "label": "Parking dashboard", "onAutoForward": "openBrowser" }
+  },
+  "customizations": {
+    "codespaces": { "openFiles": ["README.md"] },
+    "vscode": { "extensions": ["ms-python.python"] }
+  }
+}
